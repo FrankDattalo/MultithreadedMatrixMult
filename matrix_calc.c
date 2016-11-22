@@ -3,6 +3,11 @@
 
 #include "includes.h"
 
+struct threadParams {
+  int threadNo;
+  int totalThreads;
+};
+
 /*
   Computes the parity amounts to check against for execution with more
   than one thread.
@@ -55,6 +60,9 @@ void thread_calc(int threadCount) {
 }
 
 void* thread_runner(void* params) {
+  struct threadParams tParams = (threadParams*) params;
+  int threadNo = tParams->threadNo;
+  int totalThreads = tParams->totalThreads;
 
 }
 
