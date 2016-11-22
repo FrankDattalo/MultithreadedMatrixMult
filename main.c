@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 
   for(int i = 0; i < 6; i++) {
     thread_calc(i); /* calculate matrix with i amount of threads */
-    printStats(i + 1); /* print statistics about calculation */
+    printStats(i); /* print statistics about calculation */
 
     if(i != 5) {
       init();

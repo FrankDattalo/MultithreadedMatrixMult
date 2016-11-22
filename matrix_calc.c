@@ -3,10 +3,7 @@
 
 #include "includes.h"
 
-typedef struct threadParams {
-  int threadNo;
-  int totalThreads;
-} threadParams;
+int THREAD_COUNT = 1;
 
 /*
   Computes the parity amounts to check against for execution with more
@@ -36,7 +33,9 @@ static int checkErrors() {
   errors occurred during the calculation.
 */
 void printStats(int threadCount) {
-  printf("Elapsed time with %d threads: %ld. ", threadCount, timer_elapsed());
+  threadCount++; // because zero indexing is for nerds
+
+  printf("Elapsed time with %d threads: %ld seconds. ", threadCount, timer_elapsed());
 
   if(threadCount > 1) {
     /* prints either 'No errors occured.' or 'Errors occured.' */
@@ -48,35 +47,44 @@ void printStats(int threadCount) {
   printf("\n");
 }
 
-void* thread_runner(void*);
+void* thread_runner(void* param) {
+  int threadNo = (int) param;
+
+  int start = (threadNo * N) / THREAD_COUNT;
+  int end = ((threadNo + 1) * N) / THREAD_COUNT;
+
+  int i;
+  for(i = start; i < end; i++) {
+    int j;
+    for(j = 0; j < P; j++) {
+      C[i][j] = 0;
+      int k;
+      for(k = 0; k < M; k++) {
+        C[i][j] = A[i][k] * B[k][j];
+      }
+    }
+  }
+}
 
 /*
   Given an amount [0-5] the proper function to compute matrix C will
   be called.
 */
 void thread_calc(int threadCount) {
-  // TODO: spawn up the threads and give them a slide of N
-  // TODO: aww shuga i need me a slice of that array
-  // TODO: hey girl, I'd like to be between your indicies
-  // TODO: ill dangle my pointer for you baby
+  THREAD_COUNT = threadCount + 1;
 
-  // pthread_attr_t attr;
-  // pthread_attr_init(&attr);
-  //
-  // pthread_t tid;
-  //
-  // threadParams params;
-  // params.threadNo = 1;
-  // params.totalThreads = threadCount;
-  //
-  // pthread_create(&tid, &attr, thread_runner, (void*) &params);
-}
+  pthread_t *threadArr = malloc(THREAD_COUNT * sizeof(pthread_t));
+	pthread_attr_t *threadAttrArr = malloc(THREAD_COUNT * sizeof(pthread_attr_t));
 
-void* thread_runner(void* params) {
-  // threadParams tParams = *((threadParams*) params);
-  // int threadNo = tParams.threadNo;
-  // int totalThreads = tParams.totalThreads;
+	int i;
+	for(i = 0; i < THREAD_COUNT; i++){
+		pthread_attr_init(&threadAttrArr[i]);
+		pthread_create(&threadArr[i], &threadAttrArr[i], thread_runner, (void*) i);
+	}
 
+  for (i = 0; i < THREAD_COUNT; i++) {
+		pthread_join(threadArr[i], NULL);
+	}
 }
 
 static void aInit() {
