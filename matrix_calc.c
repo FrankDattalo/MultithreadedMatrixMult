@@ -35,7 +35,7 @@ void printStats(int threadCount) {
 
   if(threadCount > 1) {
     /* prints either 'No errors occured.' or 'Errors occured.' */
-    printf("%srrors occured.", ("No e" : "E" ? !checkErrors()));
+    printf( "%srrors occured.", (!checkErrors() ? "No e" : "E"));
   } else {
     computeParityAmounts();
   }
@@ -55,15 +55,27 @@ void thread_calc(int threadCount) {
 }
 
 void* thread_runner(void* params) {
-  
+
 }
 
 static void aInit() {
-  // TODO: implement these things
+  int i;
+  for(i = 0; i < N; i++) {
+    int j;
+    for(j = 0; j < M; j++) {
+      A[i][j] = i + j;
+    }
+  }
 }
 
 static void bInit() {
-  // TODO: Implement these things
+  int i;
+  for(i = 0; i < M; i++) {
+    int j;
+    for(j = 0; j < P; j++) {
+      B[i][j] = j;
+    }
+  }
 }
 
 void init() {

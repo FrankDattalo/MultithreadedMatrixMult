@@ -7,9 +7,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "timer.c"
+
 /* include custome files with #include here */
 #include "matrix.h"
 #include "matrix_calc.c"
-#include "timer.c"
+
 
 #endif /* INCLUDES_H */
