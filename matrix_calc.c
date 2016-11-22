@@ -53,12 +53,13 @@ void* thread_runner(void* param) {
   int start = (threadNo * N) / THREAD_COUNT;
   int end = ((threadNo + 1) * N) / THREAD_COUNT;
 
-  int i;
+  int i, j, k;
+
   for(i = start; i < end; i++) {
-    int j;
+
     for(j = 0; j < P; j++) {
       C[i][j] = 0;
-      int k;
+
       for(k = 0; k < M; k++) {
         C[i][j] = A[i][k] * B[k][j];
       }
