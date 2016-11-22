@@ -54,6 +54,10 @@ void thread_calc(int threadCount) {
   // TODO: ill dangle my pointer for you baby
 }
 
+void* thread_runner(void* params) {
+  
+}
+
 static void aInit() {
   // TODO: implement these things
 }
