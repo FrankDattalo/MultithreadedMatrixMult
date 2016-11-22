@@ -3,10 +3,10 @@
 
 #include "includes.h"
 
-struct threadParams {
+typedef struct threadParams {
   int threadNo;
   int totalThreads;
-};
+} threadParams;
 
 /*
   Computes the parity amounts to check against for execution with more
@@ -48,6 +48,8 @@ void printStats(int threadCount) {
   printf("\n");
 }
 
+void* thread_runner(void*);
+
 /*
   Given an amount [0-5] the proper function to compute matrix C will
   be called.
@@ -57,12 +59,23 @@ void thread_calc(int threadCount) {
   // TODO: aww shuga i need me a slice of that array
   // TODO: hey girl, I'd like to be between your indicies
   // TODO: ill dangle my pointer for you baby
+
+  // pthread_attr_t attr;
+  // pthread_attr_init(&attr);
+  //
+  // pthread_t tid;
+  //
+  // threadParams params;
+  // params.threadNo = 1;
+  // params.totalThreads = threadCount;
+  //
+  // pthread_create(&tid, &attr, thread_runner, (void*) &params);
 }
 
 void* thread_runner(void* params) {
-  struct threadParams tParams = (threadParams*) params;
-  int threadNo = tParams->threadNo;
-  int totalThreads = tParams->totalThreads;
+  // threadParams tParams = *((threadParams*) params);
+  // int threadNo = tParams.threadNo;
+  // int totalThreads = tParams.totalThreads;
 
 }
 
