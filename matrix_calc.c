@@ -49,9 +49,25 @@ void printStats(int threadCount) {
 */
 void thread_calc(int threadCount) {
   // TODO: spawn up the threads and give them a slide of N
-  // TODO: aww shuga i need me a slice of that array
-  // TODO: hey girl, I'd like to be between your indicies
+	pthread_t *threadArr = malloc(threadCount * sizeof(pthread_t));
+	pthread_attr_t *threadAttrArr = malloc(threadCount * sizeof(pthread_attr_t));
+
+	int i;
+	for(i = 0; i < threadCount; i++){
+		pthread_attr_init(&threadAttrArr[i]);
+
+		threadParams params;
+		params.threadNo = i;
+		params.totalThreads = threadCount;
+
+		pthread_create(&threadArr[i], &threadAttrArr[i], threadRunner, (void*) &params);
+	}
+
   // TODO: ill dangle my pointer for you baby
+	int j;
+	for (j = 0; j < threadCount; j++) {
+		pthread_join (thread[j], NULL);
+	}
 }
 
 void* thread_runner(void* params) {
