@@ -2,8 +2,8 @@
 #define TIMER_C
 
 /* static variable to keep track of time between calls */
-struct timespec start;
-struct timespec end;
+static struct timespec start;
+static struct timespec end;
 
 /* resets timer to STARTing time */
 void timer_reset() {
