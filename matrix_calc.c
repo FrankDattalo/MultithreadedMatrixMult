@@ -49,13 +49,10 @@ void printStats(int threadCount) {
 
 void* thread_runner(void* param) {
   int threadNo = (int) param;
-
-  int start = (threadNo * N) / THREAD_COUNT;
-  int end = ((threadNo + 1) * N) / THREAD_COUNT;
-
+  
   int i, j, k;
 
-  for(i = start; i < end; i++) {
+  for(i = threadNo; i < N; i += threadNo + THREAD_COUNT) {
 
     for(j = 0; j < P; j++) {
       C[i][j] = 0;
@@ -111,7 +108,6 @@ static void bInit() {
 void init() {
   aInit();
   bInit();
-  timer_reset();
 }
 
 #endif /* BRUTE_FORCE_MATRIX_C */

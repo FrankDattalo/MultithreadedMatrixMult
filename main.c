@@ -9,12 +9,9 @@ int main(int argc, char** argv) {
   init();
 
   for(i = 0; i < 6; i++) {
+    timer_reset();
     thread_calc(i); /* calculate matrix with i amount of threads */
     printStats(i); /* print statistics about calculation */
-
-    if(i != 5) {
-      init();
-    }
   }
 
   return 0;
