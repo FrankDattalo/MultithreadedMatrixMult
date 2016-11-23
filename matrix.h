@@ -13,10 +13,7 @@ int B[M][P];
 /* Output matrix */
 int C[N][P];
 
-/* parity amounts */
-int cZeroZero;
-int cNMinusOneZero;
-int cZeroPMinusOne;
-int cNMinusOnePMinusOne;
+/* matrix used to check against errors */
+int C_PARITY[N][P];
 
 #endif /* MATRIX_H */

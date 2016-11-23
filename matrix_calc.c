@@ -10,10 +10,13 @@ static int THREAD_COUNT = 1;
   than one thread.
 */
 static void computeParityAmounts() {
-  cZeroZero           = C[0][0];
-  cNMinusOneZero      = C[N - 1][0];
-  cZeroPMinusOne      = C[0][P - 1];
-  cNMinusOnePMinusOne = C[N - 1][P - 1];
+  int i, j;
+
+  for(i = 0; i < N; i++) {
+    for(j = 0; j < P; j++) {
+      C_PARITY[i][j] = C[i][j];
+    }
+  }
 }
 
 /*
@@ -22,10 +25,20 @@ static void computeParityAmounts() {
   return true.
 */
 static int checkErrors() {
-  return cZeroZero != C[0][0] ||
-    cNMinusOneZero != C[N - 1][0] ||
-    cZeroPMinusOne != C[0][P - 1] ||
-    cNMinusOnePMinusOne != C[N - 1][P - 1];
+
+  int i, j;
+  int errors = 0;
+
+  for(i = 0; i < N; i++) {
+    for(j = 0; j < P; j++) {
+      if(C_PARITY[i][j] != C[i][j]) {
+        fprintf(stderr, "Error occured on C[%d][%d], expected %d, was %d.\n", i, j, C_PARITY[i][j], C[i][j]);
+        errors = 1;
+      }
+    }
+  }
+
+  return errors;
 }
 
 /*
