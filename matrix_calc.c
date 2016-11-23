@@ -3,7 +3,7 @@
 
 #include "includes.h"
 
-int THREAD_COUNT = 1;
+static int THREAD_COUNT = 1;
 
 /*
   Computes the parity amounts to check against for execution with more
@@ -33,9 +33,9 @@ static int checkErrors() {
   errors occurred during the calculation.
 */
 void printStats(int threadCount) {
-  threadCount++; // because zero indexing is for nerds
+  threadCount++;
 
-  printf("Elapsed time with %d threads: %ld seconds. ", threadCount, timer_elapsed());
+  printf("Elapsed time with %d threads: %lf seconds. ", threadCount, timer_elapsed());
 
   if(threadCount > 1) {
     /* prints either 'No errors occured.' or 'Errors occured.' */
@@ -47,9 +47,9 @@ void printStats(int threadCount) {
   printf("\n");
 }
 
-void* thread_runner(void* param) {
-  int threadNo = (int) param;
-  
+static void* thread_runner(void* param) {
+  int threadNo = *(int*) param;
+
   int i, j, k;
 
   for(i = threadNo; i < N; i += threadNo + THREAD_COUNT) {
@@ -72,17 +72,19 @@ void thread_calc(int threadCount) {
   THREAD_COUNT = threadCount + 1;
 
   pthread_t *threadArr = malloc(THREAD_COUNT * sizeof(pthread_t));
-	pthread_attr_t *threadAttrArr = malloc(THREAD_COUNT * sizeof(pthread_attr_t));
+  pthread_attr_t *threadAttrArr = malloc(THREAD_COUNT * sizeof(pthread_attr_t));
+  int* indexArr = malloc(THREAD_COUNT * sizeof(int));
 
-	int i;
-	for(i = 0; i < THREAD_COUNT; i++){
-		pthread_attr_init(&threadAttrArr[i]);
-		pthread_create(&threadArr[i], &threadAttrArr[i], thread_runner, (void*) i);
-	}
+  int i;
+  for(i = 0; i < THREAD_COUNT; i++){
+    indexArr[i] = i;
+    pthread_attr_init(&threadAttrArr[i]);
+    pthread_create(&threadArr[i], &threadAttrArr[i], thread_runner, &indexArr[i]);
+  }
 
   for (i = 0; i < THREAD_COUNT; i++) {
-		pthread_join(threadArr[i], NULL);
-	}
+    pthread_join(threadArr[i], NULL);
+  }
 }
 
 static void aInit() {
