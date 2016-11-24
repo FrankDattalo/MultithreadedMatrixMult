@@ -3,6 +3,8 @@
 
 #include "includes.h"
 
+#define min(a,b)((a<b)?a:b)
+
 static int THREAD_COUNT = 1;
 
 /*
@@ -63,15 +65,30 @@ void printStats(int threadCount) {
 static void* thread_runner(void* param) {
   int threadNo = *(int*) param;
 
-  int i, j, k;
+  int i, j, k, ii, kk, jj, K_TILE, I_TILE, J_TILE, iend, jend, kend;
 
-  for(i = threadNo; i < N; i += threadNo + THREAD_COUNT) {
+  K_TILE = 1024;
+  J_TILE = 512;
+  I_TILE = 2048;
 
-    for(j = 0; j < P; j++) {
-      C[i][j] = 0;
+  /* i > k > j */
 
-      for(k = 0; k < M; k++) {
-        C[i][j] = A[i][k] * B[k][j];
+  for(ii = threadNo; ii < N; ii += I_TILE) {
+    
+    for(i = ii, iend = min(N, ii + I_TILE); i < iend; i += threadNo + THREAD_COUNT) {
+
+      for(jj = 0; jj < P; jj += J_TILE) {
+
+        for(j = jj, jend = min(P, jj + J_TILE); j < jend; j++) {
+          C[i][j] = 0;
+
+          for(kk = 0; kk < M; kk += K_TILE) {
+
+            for(k = kk, kend = min(M, kk + K_TILE); k < kend; k++) {
+              C[i][j] = A[i][k] * B[k][j];
+            }
+          }
+        }
       }
     }
   }
