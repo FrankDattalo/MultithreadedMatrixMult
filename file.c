@@ -1,7 +1,11 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
-// bitches
+// Frank Dattalo - dattalo.2@osu.edu
+// Alex Turner - turner.1303@osu.edu
+
+// Compile Instructions:
+// gcc file.c -lpthread -lrt -O1 -Wall
 
 /* include system files with #include here */
 #include <pthread.h>
@@ -111,16 +115,21 @@ void printStats(int threadCount) {
   printf("\n");
 }
 
+/* 
+  Function that threads run to calculate matrix
+*/
 static void* thread_runner(void* param) {
   int threadNo = *(int*) param;
 
   int i, j, k, ii, kk, jj, K_TILE, I_TILE, J_TILE, iend, jend, kend;
 
+  /* loop tile sizes */
   K_TILE = 1024;
   J_TILE = 512;
   I_TILE = 2048;
 
   /* i > k > j */
+  /* min() prevents seg faults here */
 
   for(ii = threadNo; ii < N; ii += I_TILE) {
     
@@ -146,8 +155,7 @@ static void* thread_runner(void* param) {
 }
 
 /*
-  Given an amount [0-5] the proper function to compute matrix C will
-  be called.
+  Calculates c with n threads
 */
 void thread_calc(int threadCount) {
   THREAD_COUNT = threadCount + 1;
