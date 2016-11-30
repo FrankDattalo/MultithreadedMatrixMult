@@ -92,6 +92,8 @@ static void* thread_runner(void* param) {
       }
     }
   }
+
+  return NULL;
 }
 
 /*

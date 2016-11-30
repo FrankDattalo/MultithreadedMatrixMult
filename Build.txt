@@ -1,1 +1,1 @@
-gcc main.c -lpthread -lrt -01 -Wall
+gcc main.c -lpthread -lrt -O1 -Wall
